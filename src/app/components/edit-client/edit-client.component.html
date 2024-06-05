@@ -1,0 +1,124 @@
+<div class="container mt-5 pt-3 pt-lg-4" *ngIf="!loading && !loadingFiles">
+
+    <!-- Titulo -->
+    <div class="row">
+        <div class="col">
+            <h3>Editar perfil</h3>
+        </div>
+    </div>
+
+    <!-- Foto de perfil -->
+    <div class="row mt-2">
+        <div class="col-6 mx-auto text-center col-md-4 contenedor-imagen">
+            <div class="contenedor">
+                <img class="img-fluid rounded imagen-editar" [src]="userFirebase.photoURL" alt="profile_picture"
+                    id="profile-image" />
+                <div class="overlay-imagen">
+                    <button class="button-none icono-editar" title="Cambiar foto de perfil" (click)="input.click()">
+                        <i class="fas fa-pen text-verde"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input escondido, sera activado por el boton -->
+        <input type="file" accept="image/*" (change)="cambioArchivo($event)" hidden #input>
+    </div>
+
+    <hr>
+
+    <!-- Formulario -->
+    <div class="row mt-2">
+        <div class="col">
+            <form [formGroup]="editForm" (ngSubmit)="submitEditForm()" id="editForm">
+                <!-- Nombre -->
+                <div class="form-group">
+                    <label for="nombre">Nombre(s)</label>
+                    <input type="text" formControlName="nombre" id="nombre" (keyup)="keyUp('nombre')"
+                        class="form-control mb-2" autocomplete="off" [class.is-invalid]="!nombre.valid && nombreEditado"
+                        [class.is-valid]="nombre.valid && nombreEditado" placeholder="Escribe tu nombre aquí" required>
+                </div>
+
+                <!-- Apellido -->
+                <div class="form-group">
+                    <label for="apellido">Apellido(s)</label>
+                    <input type="text" formControlName="apellido" id="apellido" (keyup)="keyUp('apellido')"
+                        class="form-control mb-2" autocomplete="off"
+                        [class.is-invalid]="!apellido.valid && apellidoEditado"
+                        [class.is-valid]="apellido.valid && apellidoEditado" placeholder="Escribe tu nombre aquí"
+                        required>
+                </div>
+
+                <!-- Estado -->
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select name="estado" id="estado" class="form-control" required>
+                        <option *ngFor="let estado of estados" [value]="estado" [selected]="getSelectedState(estado)">
+                            {{estado}}</option>
+                    </select>
+                </div>
+
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group">
+                    <label for="fecha">Fecha de Nacimiento</label>
+                    <input type="date" id="fecha" class="form-control" max="2008-01-01" min="1930-01-01"
+                        [value]="fecha.value" required>
+                </div>
+
+                <!-- Género -->
+                <div class="form-group">
+
+                    <label>Género</label>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="genero" id="masculino" value="m"
+                            [checked]="getCheckedGenre('m')" required>
+                        <label class="form-check-label" for="masculino">
+                            Masculino
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="genero" id="femenino" value="f"
+                            [checked]="getCheckedGenre('f')" required>
+                        <label class="form-check-label" for="femenino">
+                            Femenino
+                        </label>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Botones de aceptar o cancelar -->
+    <div class="row align-items-center">
+        <div class="col">
+            <button type="submit" class="btn btn-danger btn-block">Cancelar</button>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-success btn-block" [disabled]="editFormDisabled"
+                form="editForm">Confirmar</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Spinner de cuando carga la pantalla -->
+<ng-container *ngIf="loading && !loadingFiles">
+    <app-loading></app-loading>
+</ng-container>
+
+<!-- Spinner de cuando carga la pantalla, junto con barras de progreso para la subida de archivos
+    (FEEDBACK) para que el usuario sepa que esta pasando -->
+<ng-container *ngIf="loadingFiles">
+    <div class="container mt-5 pt-3 pt-lg-4">
+        <div class="row d-flex justify-content-center">
+            <app-loading-files [files]="archivos" [username]="userFirebase.phoneNumber" [ubicacion]="ubicacion">
+            </app-loading-files>
+        </div>
+    </div>
+</ng-container>

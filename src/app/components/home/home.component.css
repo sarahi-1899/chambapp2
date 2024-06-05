@@ -1,0 +1,68 @@
+/* Estilos para el encabezado llamativo */
+.callout {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.callout h1 {
+    font-size: 32px;
+    color: #333;
+}
+
+.highlight {
+    color: #007bff; /* Color del resaltado */
+}
+
+/* Estilos para el texto introductorio */
+.intro-text {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+
+.carousel-caption h5, .carousel-caption p {
+    background: rgba(0, 0, 0, 0.5); /* fondo semi-transparente */
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    text-shadow: 2px 2px 5px black; /* sombra de texto */
+}
+
+.intro-text {
+    font-size: 1.25rem; /* tamaño de fuente mayor */
+    color: #333; /* color de texto más oscuro */
+    background-color: #f8f9fa; /* fondo claro */
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+    text-align: center; /* centrar el texto */
+}
+
+.intro-text .highlight {
+    color: #28a745; /* color verde para destacar */
+}
+
+.community-section {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.community-section p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.community-section a {
+    color: #28a745; /* verde bootstrap */
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.community-section a:hover {
+    text-decoration: underline;
+}

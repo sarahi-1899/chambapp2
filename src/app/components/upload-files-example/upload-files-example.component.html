@@ -1,0 +1,54 @@
+<div class="container my-5">
+
+    <!-- Cargar los archivos que se van a subir -->
+    <div class="row mt-2" *ngIf="!loading else cargando">
+
+        <!-- Titulo y links de archivos para descargar las fotos -->
+        <div class="col-12 col-lg-4">
+
+            <h3>Subir archivos a Cloud Storage</h3>
+
+            <!-- Links de descarga a los archivos que acabamos de subir a cloud Storage -->
+            <ul>
+                <ng-container *ngFor="let archivo of archivos">
+                    <li *ngIf="archivo.url">
+                        URL de descarga: <a [href]="archivo.url" target="_blank">Descargar</a>
+                    </li>
+                </ng-container>
+            </ul>
+
+        </div>
+
+        <!-- Formulario para elegir el archivo -->
+        <div class="col-12 col-lg-8 text-center mt-5">
+
+            <form [formGroup]="archivoForm" (ngSubmit)="subirArchivo()">
+                <div class="form-group">
+
+                    <!-- Input de tipo file -->
+                    <input type="file" class="form-control-file" formControlName="archivo" multiple accept="image/*"
+                        (change)="cambioArchivo($event)">
+                    <span [class.text-danger]="error">{{ mensajeArchivo }}</span>
+
+                </div>
+
+                <hr>
+
+                <!-- Boton para subir los archivos a firebase -->
+                <button class="btn btn-success btn-block mt-2" [disabled]="getDisabled()">
+                    Subir archivo
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Spinner de cuando carga la pantalla, junto con barras de progreso para la subida de archivos
+    (FEEDBACK) para que el usuario sepa que esta pasando -->
+    <ng-template class="row" #cargando>
+        <app-loading-files [files]="archivos" [username]="'omarrb76'" [ubicacion]="ubicacion"></app-loading-files>
+    </ng-template>
+
+</div>

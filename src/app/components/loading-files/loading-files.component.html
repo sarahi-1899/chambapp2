@@ -1,0 +1,18 @@
+<div class="col text-center">
+    <!-- Spinner de carga -->
+    <div class="spinner-grow text-info my-3" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <!-- Barra de progreso por cada archivo -->
+    <div class="text-center mt-3" *ngIf="files.length > 0">
+        <h3>Cargando archivos</h3>
+    </div>
+    <div class="progress my-3" *ngFor="let file of files">
+        <div class="progress-bar" role="progressbar" [style]="getPorcentaje(file)">
+            <span style="word-break: break-all;">{{ file.archivo.name }}</span>
+        </div>
+    </div>
+    <div class="text-center mb-3">
+        <span style="word-break: break-all;">{{ log }}</span>
+    </div>
+</div>

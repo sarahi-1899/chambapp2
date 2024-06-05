@@ -1,0 +1,195 @@
+<div class="container mt-5 pt-3 pt-lg-4" *ngIf="!loading else cargando">
+
+    <!-- Titulo (header) -->
+    <div class="row">
+        <div class="col">
+            <h3>Datos de tu servicio</h3>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="row">
+        <div class="col">
+            <p>
+                Llena la siguiente información para mostrar tu servicio a otros usuarios de ChambApp.
+                <br>
+                Esta información podrá ser visualizada por otros usuarios de ChambApp.
+            </p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Formulario -->
+    <form [formGroup]="serviceForm" (ngSubmit)="submitServiceForm()">
+
+        <!-- Dividiremos en pasos el registro, para no abrumar al usuario -->
+        <ng-container [ngSwitch]="step">
+
+            <!-- Paso 1: Nombre del servicio, descripción del servicio, tags -->
+            <ng-container *ngSwitchCase="0">
+
+                <!-- Nombre -->
+                <div class="form-group">
+                    <label for="nombre">Nombre de tu servicio</label>
+                    <input type="text" formControlName="nombre" id="nombre" (keyup)="keyUp('nombre')"
+                        class="form-control mb-2" autocomplete="off" [class.is-invalid]="!nombre.valid && nombreEditado"
+                        [class.is-valid]="nombre.valid && nombreEditado" placeholder="Escribe tu nombre aquí" required>
+                </div>
+
+                <!-- Descripción del servicio -->
+                <div class="form-group">
+                    <label for="descripcion">Describe tu servicio</label>
+                    <textarea class="form-control mb-2" formControlName="descripcion" id="descripcion"
+                        (keyup)="keyUp('descripcion')" rows="3"
+                        [class.is-invalid]="!descripcion.valid && descripcionEditado"
+                        [class.is-valid]="descripcion.valid && descripcionEditado"
+                        placeholder="Describe tu servicio aquí" required>
+                    </textarea>
+                </div>
+
+                <!-- TAGS -->
+                <div class="form-group">
+                    <label>Elije las 3 características que más se adaptan a tu servicio</label>
+                    <div class="row d-flex justify-content-center">
+                        <div *ngFor="let tag of tags" [class.tags]="checkSelectedTag(tag)"
+                            [class.tags-selected]="!checkSelectedTag(tag)"
+                            class="col-4 col-sm-3 rounded m-2 py-2 d-flex align-items-center pointer"
+                            (click)="selectTag(tag)">
+                            <div class="mx-auto text-center">
+                                <strong class="text-white">{{tag}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="form-text text-muted mt-2">
+                        Elije al menos una característica
+                    </small>
+                </div>
+
+            </ng-container>
+
+            <!-- Paso 2: Horario -->
+            <ng-container *ngSwitchCase="1">
+
+                <h4 class="text-muted mb-2">Especifíca tu horario de trabajo</h4>
+                <br>
+
+                <!-- Dias de la semana (cuando se le da click, aparece mas informacion) -->
+                <div class="form-row align-items-center">
+                    <div class="col mb-2" *ngFor="let dia of dias">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" [id]="dia"
+                                (click)="agregarRemoverDia(dia)" [checked]=encontrarDia(dia).activado>
+                            <label class="custom-control-label" [for]="dia">
+                                <h5>{{ primerLetra(dia) }}</h5>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <ng-container [ngSwitch]="diaSelected">
+
+                    <ng-container *ngFor="let dia of dias">
+
+                        <ng-container *ngSwitchCase="dia">
+
+                            <h5 class="text-muted mt-2">Horario para el día {{dia}}</h5>
+
+                            <!-- Hora de inicio -->
+                            <div class="form-group">
+                                <label for="hora_inicio">Hora de apertura</label>
+                                <input type="time" class="form-control mb-2" [value]="encontrarDia(dia).hora_inicio"
+                                    [class.is-invalid]="encontrarDia(dia).error"
+                                    [class.is-valid]="!encontrarDia(dia).error" (change)="cambioHora(tiempo1, tiempo2)"
+                                    #tiempo1>
+                            </div>
+
+                            <!-- Hora de término -->
+                            <div class="form-group">
+                                <label for="hora_fin">Hora de clausura</label>
+                                <input type="time" class="form-control mb-2" [value]="encontrarDia(dia).hora_termino"
+                                    [class.is-invalid]="encontrarDia(dia).error"
+                                    [class.is-valid]="!encontrarDia(dia).error" (change)="cambioHora(tiempo1, tiempo2)"
+                                    #tiempo2>
+                            </div>
+
+                        </ng-container>
+
+                    </ng-container>
+
+                </ng-container>
+
+                <span class="text-danger">{{mostrarErrores()}}</span>
+
+            </ng-container>
+
+            <!-- Paso 3: fotos -->
+            <ng-container *ngSwitchCase="2">
+
+                <p>Por último, incluye fotos de tu servicio para que la gente conozca tus resultados.</p>
+
+                <div class="row d-flex justify-content-around">
+
+                    <!-- Imagenes (una vez que el usuario haya subido algo) -->
+                    <div class="col-6 my-3" *ngFor="let archivo of archivos">
+                        <!-- Imagen -->
+                        <img [id]="archivo.archivo.name" class="img-fluid rounded">
+                        <!-- Boton de borrar -->
+                        <button class="rounded-circle borrar-imagen" (click)="borrarImagen(archivo)"></button>
+                    </div>
+
+                    <!-- Div col del boton -->
+                    <div class="col align-items-center my-3" [class.d-flex]="archivos.length < 5"
+                        [hidden]="archivos.length > 4">
+
+                        <!-- Botón que activa el input -->
+                        <div class="mx-auto">
+                            <button type="button" class="h1 button-none text-verde" (click)="input.click()">
+                                <i class="fas fa-plus-circle"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Input escondido, sera activado por el boton -->
+                <input type="file" accept="image/*" (change)="cambioArchivo($event)" hidden #input>
+
+            </ng-container>
+
+            <!-- Botones de siguiente y anterior -->
+            <div class="row mt-2">
+
+                <!-- Anterior -->
+                <div class="col" *ngIf="step > 0" (click)="cambiarPaso(false)">
+                    <button type="button" class="btn btn-secondary btn-block">
+                        Anterior
+                    </button>
+                </div>
+
+                <!-- Siguiente -->
+                <div class="col">
+                    <button type="button" class="btn btn-success btn-block" (click)="cambiarPaso(true)"
+                        [disabled]="!serviceFormDisabled">
+                        {{ step == 2 ? 'Aceptar' : 'Siguiente' }}
+                    </button>
+                </div>
+
+            </div>
+
+        </ng-container>
+
+    </form>
+
+</div>
+
+<!-- Spinner de cuando carga la pantalla, junto con barras de progreso para la subida de archivos
+    (FEEDBACK) para que el usuario sepa que esta pasando -->
+<ng-template #cargando>
+    <div class="container mt-5 pt-3 pt-lg-4">
+        <div class="row d-flex justify-content-center">
+            <app-loading-files [files]="archivos" [username]="user.phoneNumber" [ubicacion]="ubicacion"></app-loading-files>
+        </div>
+    </div>
+</ng-template>

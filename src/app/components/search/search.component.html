@@ -1,0 +1,114 @@
+<div class="container mt-5 pt-3 pt-lg-4" *ngIf="!loading else cargando">
+
+    <!-- Titulo -->
+    <div class="row">
+        <div class="col">
+            <h3>Búsqueda {{busqueda}}</h3>
+        </div>
+    </div>
+
+    <!-- Busqueda -->
+    <form class="row d-flex justify-content-center my-4 px-0">
+        <div class="col-8 mr-0">
+            <input #searchInput (keyup.enter)="navigate('search/'+searchInput.value)" class="form-control" type="search" placeholder="Buscar">
+        </div>
+        <div class="col-3 col-md-2 ml-0">
+            <button (click)="navigate('search/'+searchInput.value)"  class="btn btn-success btn-block" type="submit">
+                <a style="text-decoration: none;" class="text-white">
+                    <i class="fas fa-search"></i>
+                </a>
+            </button>
+        </div>
+    </form>
+
+    <!-- Filtros de busqueda -->
+    <div class="row align-items-start mt-2">
+        <div class="col text-center">
+            <i class="fas fa-baby fa-3x"></i>
+        </div>
+        <div class="col text-center">
+            <i class="fas fa-key fa-3x text-verde"></i>
+        </div>
+        <div class="col text-center">
+            <i class="fas fa-wrench fa-3x"></i>
+        </div>
+        <div class="col text-center">
+            <i class="fas fa-hammer fa-3x text-verde"></i>
+        </div>
+    </div>
+    <hr>
+    <div class="row align-items-start">
+        <div class="col text-center">
+            <i class="fas fa-hard-hat fa-3x text-verde"></i>
+        </div>
+        <div class="col text-center">
+            <i class="fas fa-paint-roller fa-3x"></i>
+        </div>
+        <div class="col text-center">
+            <i class="fas fa-broom fa-3x text-verde"></i>
+        </div>
+        <div class="col text-center">
+            <i class="fas fa-bath fa-3x"></i>
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Resultados de busqueda -->
+    <table class="table table-striped table-dark" *ngFor="let serv of servicios; index as i">
+
+        <!-- Foto de perfil -->
+        <tr>
+            <td colspan="2">
+                <p style="text-align: center;">
+                    <img class="img-fluid center-block" [src]="serv.fotos[0]" />
+                </p>
+            </td>
+        </tr>
+
+        <!-- Servicio -->
+        <tr>
+            <td colspan="2">Servicio: {{serv.nombre}}</td>
+        </tr>
+        <!-- Descripcion -->
+        <tr>
+            <td colspan="2">Descripcion: {{serv.descripcion}}</td>
+        </tr>
+        <!-- Nombre y calificacion del servidor -->
+        <tr>
+            <td>Servidor: {{getNombre(i)}}</td>
+            <td>Calificacion: {{getCalificacion(i)}}</td>
+        </tr>
+        <!-- Telefono -->
+        <tr>
+            <td colspan="2">Telefono: {{getTelefono(i)}}</td>
+        </tr>
+        <!-- Horario -->
+        <tr>
+            <td colspan="2">Horario: {{getHorario(serv)}}</td>
+        </tr>
+        <!-- Link para perfil de servicio -->
+        <tr>
+            <td colspan="2"><button class="btn btn-block btn-success" (click)="navigate('servicio/' + serv.username)">Ir</button></td>
+        </tr>
+    </table>
+
+    <!-- Paginación -->
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<!-- Spinner de cuando carga la pantalla -->
+<ng-template #cargando>
+    <app-loading></app-loading>
+</ng-template>

@@ -1,0 +1,42 @@
+<div class="container mt-5">
+    <div class="row" [hidden]="user">
+        <div class="col">
+            <h1>Sign In With Your Phone Number</h1>
+            <form [formGroup]="phoneNumber" (ngSubmit)="sendLoginCode()">
+                <label for="phone">Phone Number</label>
+                <input type="text" formControlName="number" id="phone" (keyup)="keyUp()" class="form-control mb-2"
+                    autocomplete="off" [class.is-invalid]="!phoneNumber.valid" [class.is-valid]="phoneNumber.valid"
+                    placeholder="Phone Number">
+                <span class="text-danger">{{error}}</span>
+
+                <div class="text-center">
+                    <div id="recaptcha-container" class="d-inline-block"></div>
+                </div>
+
+                <button class="btn btn-primary btn-block mt-2" type="submit" id="send-sms-number" disabled>SMS Text
+                    Login Code</button>
+            </form>
+
+            <div *ngIf="windowRef.confirmationResult" class="mt-2">
+                <div class="form-group">
+                    <label for="code">Enter Your Verification Code Here</label><br>
+                    <input name="code" [(ngModel)]="verificationCode" type="text" class="form-control"
+                        placeholder="Verification Code" autocomplete="off">
+                </div>
+                <button class="btn btn-success btn-block" (click)="verifyLoginCode()">Verify</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="user">
+
+            You have succesfuly logged in with your phone Number
+
+            <br>
+
+            UserId: {{ user?.uid }}
+
+        </div>
+    </div>
+</div>

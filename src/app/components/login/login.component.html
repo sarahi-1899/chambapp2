@@ -1,0 +1,105 @@
+<div class="container mt-5 pt-3 pt-lg-4">
+
+    <!-- Titulo (header) -->
+    <div class="row">
+        <div class="col">
+            <h3>Iniciar sesión</h3>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="row">
+        <div class="col">
+            <p>¿No tienes una cuenta? Crea una <a (click)="navigate('signup')" class="text-verde pointer">aquí</a>
+            </p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Formulario -->
+    <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
+
+        <!-- Dividiremos en pasos el inicio de sesión, igual que el signUp -->
+        <ng-container [ngSwitch]="step">
+
+            <!-- Paso 1: telefono -->
+            <ng-container *ngSwitchCase="0">
+
+                <p>Ingresa tu teléfono para iniciar sesión.</p>
+
+                <!-- Número de teléfono -->
+                <div class="form-group">
+                    <label for="telefono">Teléfono (10 dígitos)</label>
+                    <input type="text" formControlName="telefono" id="telefono" (keyup)="keyUp('telefono')"
+                        maxlength="10" class="form-control mb-2" autocomplete="off"
+                        [class.is-invalid]="!telefono.valid && telefonoEditado || errorTEL"
+                        [class.is-valid]="telefono.valid && telefonoEditado && !errorTEL"
+                        placeholder="Escribe tu número de teléfono aquí" required>
+                    <small [hidden]="!errorTEL" class="text-danger">{{ errorTEL }} <a (click)="navigate('signup')" class="text-rojo pointer">aquí</a></small>
+                    <small class="form-text text-muted">
+                        Recibiras un SMS con un código único, úsalo para iniciar sesión.
+                    </small>
+                </div>
+
+                <!-- ReCaptcha -->
+                <div class="text-center mb-2">
+                    <div id="recaptcha-container" class="d-inline-block"></div>
+                </div>
+
+            </ng-container>
+
+            <!-- Paso 2: confirmar telefono SMS -->
+            <ng-container *ngSwitchCase="1">
+
+                <p>Un código fue te fue enviado por SMS, ingresalo en el siguiente campo.</p>
+
+                <!-- Formulario para confirmar SMS -->
+                <form [formGroup]="codeForm" (ngSubmit)="submitCodeForm()" id="codeForm">
+
+                    <!-- SMS -->
+                    <div class="form-group">
+                        <label for="code">Código SMS</label>
+                        <input type="text" formControlName="code" id="code" (keyup)="keyUp('code')" maxlength="6"
+                            class="form-control mb-2" autocomplete="off"
+                            [class.is-invalid]="!code.valid && codeEditado || errorSMS"
+                            [class.is-valid]="code.valid && codeEditado" placeholder="Escribe tu código aquí" required>
+                        <span class="text-danger">{{errorSMS}}</span>
+                    </div>
+
+                </form>
+
+            </ng-container>
+
+            <!-- Botones de siguiente y anterior -->
+            <div class="row">
+
+                <!-- Anterior -->
+                <div class="col" *ngIf="step > 0" (click)="cambiarPaso(false)">
+                    <button type="button" class="btn btn-secondary btn-block">
+                        Anterior
+                    </button>
+                </div>
+
+                <!-- Confirmar numero -->
+                <div class="col" *ngIf="step == 0">
+                    <button class="btn btn-success btn-block" type="submit" id="submit-button" disabled>
+                        Enviar SMS
+                    </button>
+                </div>
+
+                <!-- Confirmar codigo -->
+                <div class="col" *ngIf="step == 1">
+                    <button class="btn btn-success btn-block" type="submit" id="submit-button" form="codeForm"
+                        [disabled]="!signUpFormDisabled">
+                        Enviar
+                    </button>
+                </div>
+
+            </div>
+
+        </ng-container>
+
+    </form>
+
+</div>

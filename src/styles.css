@@ -1,0 +1,194 @@
+html,
+body,
+app-root {
+    height: 100%;
+}
+
+app-root {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1 0 auto;
+    padding: 20px;
+}
+
+app-footer {
+    flex-shrink: 0;
+}
+/* La seccion de arriba es para que el footer siempre este hasta abajo */
+
+.pointer {
+    cursor: pointer;
+}
+
+.bg-verde {
+    background-color: #51BE95 !important;
+}
+
+/* Tamaño del logo cuando el navbar es grande */
+.logo {
+    max-width: 50px;
+}
+
+/* Tamaño del logo cuando el navbar es pequeño */
+.logo-collapse {
+    max-width: 110px;
+}
+
+/* Boton para el menu hamburguesa del navbar */
+.hamburguesa {
+    max-width: 30px;
+    max-height: 30px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.text-verde {
+    color: #51BE95;
+}
+
+.text-verde:hover {
+    color: #367e62;
+}
+
+.text-rojo {
+    color: #ff0000;
+}
+
+.text-rojo:hover {
+    color: #ff0000af;
+}
+
+/* Los iconos del footer se hacen mas grande en pantalla medium */
+.icono {
+    font-size:1.3rem;
+}
+
+/* Bootstrap md, hace mas grande el icono a partir de md */
+@media (min-width: 768px) {  
+    .icono {
+        font-size:1.5rem;
+    }
+}
+
+/* Para que el radio boton se vea de color verde */
+input[type='radio']:after {
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #51BE95;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+/* Para las calificaciones */
+.calif {
+    font-size: 1.6rem;
+}
+
+/* Para los tags */
+.tags {
+    background-color: #5ca6fa;
+}
+
+.tags:hover {
+    background-color: #4880c0;
+}
+
+.tags-selected {
+    background-color: #8064A2;
+}
+
+.tags-selected:hover {
+    background-color: #524068;
+}
+
+
+/* Boton de tacha para borrar imagen */
+.button-none {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.borrar-imagen {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background-size: 100% 100%;
+    background-image: url("https://img.freepik.com/iconos-gratis/x-circulo_318-2105.jpg?size=338&ext=jpg");
+    top: -10px;
+    right: 5px;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+/* Para editar la imagen de perfil */
+.contenedor-imagen {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.imagen-editar {
+    width: 100%;
+    height: auto;
+}
+
+.overlay-imagen {
+    position: absolute;
+    top: 80%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    width: 100%;
+    /* background-color: red; */
+    transition: .3s ease;
+}
+
+.icono-editar {
+    color: white;
+    font-size: 35px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.fa-pen:hover {
+    color: #05fc9d;
+}

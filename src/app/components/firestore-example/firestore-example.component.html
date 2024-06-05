@@ -1,0 +1,63 @@
+<div class="container my-2">
+
+    <h1 class="text-center">CRUD Simple</h1>
+
+    <hr />
+
+    <div class="row">
+
+        <div class="col-8">
+
+            <h4 class="text-center">Lista de Tareas</h4>
+
+            <ul class="list-group">
+
+                <li *ngIf="tareas.length == 0 else contenido" class="list-group-item">No hay tareas</li>
+
+                <ng-template #contenido>
+
+                    <li *ngFor="let tarea of tareas" class="list-group-item">
+                        <span class="lead">{{tarea.tarea}}</span>
+                        <button class="btn btn-sm btn-danger float-right mx-2" (click)="eliminarTarea(tarea.id)"
+                            [disabled]="loading">
+                            Eliminar
+                        </button>
+                        <button class="btn btn-sm btn-warning float-right" (click)="editarTarea(tarea)"
+                            [disabled]="loading">
+                            Editar
+                        </button>
+                    </li>
+
+                </ng-template>
+
+            </ul>
+
+        </div>
+
+        <div class="col-4">
+
+            <h4 class="text-center">
+                {{ modoEdicion ? 'Editar tarea' : 'Agregar tarea' }}
+            </h4>
+
+            <form (ngSubmit)="submitTarea()">
+
+                <span *ngIf="error" class="text-danger">{{error}}</span>
+
+                <input type="text" class="form-control mb-2" placeholder="Ingrese Tarea" [(ngModel)]="tarea" name="x"
+                    autocomplete="off" />
+
+                <button *ngIf="modoEdicion" class="btn btn-warning btn-block" type="submit" [disabled]="loading">
+                    Editar tarea
+                </button>
+                <button *ngIf="!modoEdicion" class="btn btn-dark btn-block" type="submit" [disabled]="loading">
+                    Agregar tarea
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
